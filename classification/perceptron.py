@@ -1,22 +1,20 @@
 import numpy as np
-
 class Perceptron(object):
-    """ パーセプトロンの分類器
+    """ パーセプトロン
     
     パラメータ
-    ----------
+    -----------------------------
     eta : float
-        学習率（0.0より大きく1.0以下の値）
+    	学習率（0.0より大きく1.0以下の値）
     n_iter : int
-        トレーニングデータのトレーニング回数
-    
-    属性
-    ----------
-    w_ : 1次元配列
-        適合後の重み
-    errors_ : リスト
-        各エポックでの誤分類数
+    	トレーニングデータのトレーニング回数
 
+    属性
+    -----------------------------
+    w_ : 1次元配列
+    	適合後の重み
+    errors_ : リスト
+    	各エポックでの誤分類数
     """
     def __init__(self, eta=0.01, n_iter=10):
         self.eta = eta
@@ -26,33 +24,30 @@ class Perceptron(object):
         """ トレーニングデータに適合させる
 
         パラメータ
-        ----------
+        -----------------------------
         X : {配列のようなデータ構造}, shape = [n_samples, n_features]
-            トレーニングデータ
-            n_samplesはサンプルの個数、n_featureは特徴量の個数
+        	トレーニングデータ
         y : 配列のようなデータ構造, shape = [n_samples]
-            目的変数
+        	目的変数
 
         戻り値
-        ----------
+        -----------------------------
         self : object
-
         """
         self.w_ = np.zeros(1 + X.shape[1])
         self.errors_ = []
 
-        for _ in range(self.n_iter): # トレーニング回数分トレーニングデータを反復
-            errors = 0;
-            for xi, target in zip(X, y): # 各サンプルで重みを更新
-                # 重み w1, ... , wmの更新
-                # Δw_j = η(y_i - yhat_i)x_j (j = 1, ..., m)
+        for _ in range(self.n_iter):	# トレーニング回数分トレーニングデータを反復
+            errors = 0
+            for xi, target in zip(X, y):	# 各サンプルで重みを更新
+                # 重み w_1, ..., w_mの更新
+                # Δw_j = η(y^i - yhat^i)x_j^i (j = 1, ..., m)
                 update = self.eta * (target - self.predict(xi))
                 self.w_[1:] += update * xi
-                # 重み w0 の更新：Δw0=η(y_i - yhat_i)
-                self.w_[0] += update
+                # 重み w_0の更新 : Δw_0 = η(y^i - yhat^i)
+                self.w_[0] += self.eta * update
                 # 重みの更新が 0 でない場合は誤分類としてカウント
                 errors += int(update != 0.0)
-
             # 反復回数ごとの誤差を格納
             self.errors_.append(errors)
         return self
