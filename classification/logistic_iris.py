@@ -9,7 +9,7 @@ from plot_decision_regions import plot_decision_regions
 # irisデータセットをロード
 iris = datasets.load_iris()
 # 3, 4列目の特徴量を抽出
-X = iris.data[:, [2, 3]]
+X = iris.data[:, [2,3]]
 # クラスラベルを取得
 y = iris.target
 # トレーニングデータとテストデータに分割
